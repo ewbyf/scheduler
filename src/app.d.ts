@@ -9,4 +9,9 @@ declare global {
 	}
 }
 
-export {};
+interface Processor {
+    id: number;
+    arrivalTime: number;
+	serviceTime: number;
+	priority: number;
+}
