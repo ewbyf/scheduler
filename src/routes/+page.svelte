@@ -47,7 +47,7 @@
 </script>
 
 <main class="h-screen w-full bg-slate-900 flex flex-col items-center py-10 px-5 overflow-y-auto">
-    <p class="text-white text-3xl font-bold mb-10 text-center">OS Scheduling Algorithms Visualizer</p>
+    <p class="text-white text-3xl font-bold mb-10 text-center">OS Scheduling Algorithms</p>
     <div class="flex items-center gap-10 mb-5 text-white font-bold">
         <button class="bg-sky-500 px-5 py-3 rounded-xl" on:click={addProcessor}>ADD</button>
         <button class="bg-red-500 px-5 py-3 rounded-xl" on:click={removeProcessor}>REMOVE</button>
