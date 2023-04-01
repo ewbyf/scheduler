@@ -3,7 +3,6 @@
     
     const addProcessor = () => {
         processorList = [...processorList, {id: processorList.length, arrivalTime: 0, serviceTime: 1, priority: 1, timeRan: 0}];
-        console.log(processorList)
     }
 
     const removeProcessor = () => {
@@ -18,9 +17,14 @@
         sorted.sort(function(a,b) {
             return a.arrivalTime - b.arrivalTime;
         });
+
+        for (let i = 0; i < sorted.length; i++) {
+            sorted[i].timeRan = 0;
+        }
+        
         switch(dropdownValue) {
             case "hrrn":
-                hrrn(sorted);
+                // doneList = hrrn(sorted);
                 break;
             case "srtf":
                 doneList = srtf(sorted);
@@ -29,7 +33,7 @@
                 doneList = sjf(sorted);
                 break;
             case "priority":
-                priority(sorted);
+                doneList = priority(sorted);
                 break;
         }
         done = true;
@@ -50,13 +54,13 @@
         <button type="submit" form="processor-form" class="bg-green-500 px-5 py-3 rounded-xl" on:click={runAlgorithm}>RUN</button>
     </div>
     <select class="focus:outline-none p-3 rounded-xl bg-slate-500 text-white mb-5" bind:value={dropdownValue}>
-        <option value="hrrn">Highest Response Ratio Next</option>
+        <option value="hrrn">Highest Response Ratio Next (non-preemptive)</option>
         <option value="srtf">Shortest Remaining Time First (preemptive)</option>
         <option value="sjf">Shortest Job First (non-preemptive)</option>
         <option value="priority">Priority (preemptive)</option>
     </select>
     <div class="w-full max-w-[1000px] mb-10">
-        <p class="text-white font-bold text-2xl mb-3 self-start">LIST OF PROCESSORS</p>
+        <p class="text-gray-300 font-bold text-2xl mb-3 self-start">LIST OF PROCESSORS</p>
         <form id="processor-form">
             <table class="border border-collapse w-full">
                 <tr>
@@ -88,7 +92,7 @@
     </div>
 
     <div class="w-full max-w-[1000px]">
-        <p class="text-white font-bold text-2xl mb-3 self-start">OUTPUT LIST</p>
+        <p class="text-gray-300 font-bold text-2xl mb-3 self-start">OUTPUT LIST</p>
         <form id="processor-form">
             <table class="border border-collapse w-full">
                 <tr>
