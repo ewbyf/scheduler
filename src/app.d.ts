@@ -14,4 +14,13 @@ interface Processor {
     arrivalTime: number;
 	serviceTime: number;
 	priority: number;
+	timeRan: number;
+}
+
+interface PostProcessor {
+	id: number;
+	arrivalTime: number;
+	completionTime: number;
+	tatTime: number;
+	waitingTime: number;
 }
