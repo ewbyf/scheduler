@@ -22,10 +22,10 @@ const sortByPriority = (processorList: Processor[]) => {
     return sorted;
 }
 
-const sortByHrrn = (processorList: Processor[]) => {
+const sortByHrrn = (processorList: Processor[], time: number) => {
     let sorted = processorList.slice(0);
     sorted.sort(function(a,b) {
-        return a.priority - b.priority;
+        return ((time - b.arrivalTime + b.serviceTime)/b.serviceTime) - ((time - a.arrivalTime + a.serviceTime)/a.serviceTime) ;
     });
     return sorted;
 }
@@ -34,21 +34,32 @@ export const hrrn = (processorList: Processor[]) => {
     let time = 0;
     let readyList: Processor[] = [];
     let doneList: PostProcessor[] = [];
+    let processorRunning: boolean = false;
     while (readyList.length || processorList.length) {
         while (processorList.length && processorList[0].arrivalTime === time) {
             readyList.push(processorList[0]);
             processorList.shift();
         }
 
+        if (!processorRunning) {
+            readyList = sortByHrrn(readyList, time);
+        }
+
         while (readyList.length && readyList[0].timeRan === readyList[0].serviceTime) {
             let obj = readyList[0];
             doneList.push({id: obj.id, arrivalTime: obj.arrivalTime, completionTime: time, tatTime: time - obj.arrivalTime, waitingTime: time - obj.arrivalTime - obj.serviceTime});
             readyList.shift();
-            readyList = sortByHrrn(readyList);
+            readyList = sortByHrrn(readyList, time);
         }
 
         if (readyList.length) {
             readyList[0].timeRan++;
+            if (!processorRunning) {
+                processorRunning = true;
+            }
+        }
+        else {
+            processorRunning = false;
         }
 
         time++;
@@ -56,10 +67,6 @@ export const hrrn = (processorList: Processor[]) => {
 
 
     return doneList;
-
-   // Non preemptive
-   // Waiting time = current time - arrivalTime
-   // HRRN = waiting time + service time / service time
 }
 
 export const srtf = (processorList: Processor[]) => {
@@ -89,8 +96,6 @@ export const srtf = (processorList: Processor[]) => {
 
 
     return doneList;
-
-    // need to sort by time left which is service time - tam ran
  }
 
  export const sjf = (processorList: Processor[]) => {
@@ -130,20 +135,6 @@ export const srtf = (processorList: Processor[]) => {
 
 
     return doneList;
-
-
-    // sort by arrival
-    // have time variable that increments
-    // while next thing in sorted list is same as time, add to ready list, remove from sorted list
-    // current time variable that keeps track of how long current process has been looping
-    // create a done list and add stuff to it when serviceTime === timeRan
-    // if readylist and sortedlist both empty, return done
-
-    // id: number;
-	// arrivalTime: number;
-	// completionTime: number;
-	// tatTime: number;
-	// waitingTime: number;
  }
 
  export const priority = (processorList: Processor[]) => {

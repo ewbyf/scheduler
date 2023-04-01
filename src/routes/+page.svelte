@@ -21,10 +21,10 @@
         for (let i = 0; i < sorted.length; i++) {
             sorted[i].timeRan = 0;
         }
-        
+
         switch(dropdownValue) {
             case "hrrn":
-                // doneList = hrrn(sorted);
+                doneList = hrrn(sorted);
                 break;
             case "srtf":
                 doneList = srtf(sorted);
